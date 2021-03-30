@@ -9,23 +9,10 @@ first.append(p2);
 const jokeJS1 = JSON.parse(`{"id":18,"type":"programming","setup":"Why did the programmer quit his job?","punchline":"Because he didn't get arrays."}`);
 console.log(jokeJS1);
 
-async function showAFunny(){
-    try {
-        const jokeJS1 = JSON.parse(`{"id":18,"type":"programming","setup":"Why did the programmer quit his job?","punchline":"Because he didn't get arrays."}`);
-        console.log(`Successful`);
-        // console.log(jokeJS1);
-        // 1b
-        p1.innerText = jokeJS1.setup;
-        // 1c
-        p2.innerText = jokeJS1.punchline;
-    } catch (err) {
-        console.log(`NOT Successful`);
-        console.log(err);
-    }
-}
-showAFunny();
-
-console.log("==============================================");
+// 1b
+p1.innerText = jokeJS1.setup;
+// 1c
+p2.innerText = jokeJS1.punchline;
 
 // 2
 const second = document.querySelector('#second');
@@ -34,20 +21,19 @@ const p4 = document.createElement('p');
 second.append(p3);
 second.append(p4);
 
+// 2a
 axios.get(`https://official-joke-api.appspot.com/random_joke`)
-  .then(jokeJS2 => {
-    console.log(`Question 2 Was Successful`);
-    // With Axios the data requested is inside the "data" property of the returned JavaScript object
-    console.log(jokeJS2.data);
-    p3.innerText = jokeJS2.data.setup;
-    p4.innerText = jokeJS2.data.punchline;
-  })
-  .catch(rejected => {
-console.log(`Question 2 Was NOT Successful`);
-    console.log(rejected);
-  });
-
-console.log("==============================================");
+// 2b
+    .then(res => {
+        const jokeJS2 = res;
+        // 2c
+        p3.innerText = jokeJS2.data.setup;
+        p4.innerText = jokeJS2.data.punchline;
+    })
+    // 2d
+    .catch(err => {
+        console.log(err);
+    });
 
 // 3
 const third = document.querySelector('#third');
@@ -56,35 +42,60 @@ const p6 = document.createElement('p');
 third.append(p5);
 third.append(p6);
 
+// 3b
 async function jokeFunc() {
+    // 3d
     try {
-      const jokeJS3 = await axios.get(`https://official-joke-api.appspot.com/random_joke`);
-      console.log(`Question 3 Was Successful`);
-      console.log(jokeJS3.data);
-      p5.innerText = jokeJS3.data.setup;
-      p6.innerText = jokeJS3.data.punchline;
-    } catch (reject) {
-      console.log(`Question 3 Was NOT Successful`);
-      console.log(reject);
+        // 3a
+        const jokeJS3 = await axios.get(`https://official-joke-api.appspot.com/random_joke`);
+        // 3c
+        p5.innerText = jokeJS3.data.setup;
+        p6.innerText = jokeJS3.data.punchline;
+    } catch (err) {
+        console.log(err);
     }
-  }
-  jokeFunc();
+}
+jokeFunc();
 
 // 4
 const fourth = document.querySelector('#fourth');
 const p7 = document.createElement('p');
 fourth.append(p7);
 
-const baseEndpoint = `http://api.tvmaze.com/`;
+// 4a
 const id = `38963`;
 const season = `1`;
 const number = `8`;
-const episodeByNumberURL = `shows/${id}/episodebynumber?season=${season}&number=${number}`
-const fullEndpoint = baseEndpoint + episodeSearchURL;
 
-async function tvMazeFunc() {
-    try {
-        const mando = await axios.get
+// 4b
+const fullURL = `http://api.tvmaze.com/shows/${id}/episodebynumber?season=${season}&number=${number}`;
+
+// 4d
+async function tvMazeFunc(){
+    // 4f
+    try{
+    // 4c
+    const mando = await axios.get(fullURL);
+    p7.innerText = mando.data.name;
+    // 4e
+    } catch (err) {
+        console.log(err);
     }
 }
-  
+tvMazeFunc();
+
+// BONUS
+// 5
+const body = document.querySelector(`body`);
+const img = document.createElement(`img`);
+body.append(img);
+
+async function pokeFunc(){
+    try {
+        const pokeData = await axios.get(`https://pokeapi.co/api/v2/pokemon/pikachu`);
+        img.src = pokeData.data.sprites.front_default;
+    } catch (err) {
+        console.log(err);
+    }
+}
+pokeFunc();
